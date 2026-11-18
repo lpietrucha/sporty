@@ -1,0 +1,17 @@
+{
+  "single_bet_ui": [
+    {
+      "id": "home-stake-10.00",
+      "selection": "HOME",
+      "stake": "10.00"
+    }
+  ],
+  "insufficient_balance_api": [
+    {
+      "id": "balance-90-stake-100",
+      "selection": "HOME",
+      "balance_before_bet": 90.0,
+      "stake_above_balance": 100.0
+    }
+  ]
+}

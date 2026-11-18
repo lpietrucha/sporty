@@ -1,0 +1,56 @@
+# --- Secrets and credentials -------------------------------------------------
+# Environment files (user ids, API keys, tokens). Commit only the template.
+.env
+.env.*
+*.env
+!.env.example
+configs/*.local.*
+configs/secrets.*
+# Keys, certificates and credential files
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+credentials*.json
+secrets*.json
+*.secret
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# --- Test runs and reports -----------------------------------------------------
+# Generated HTML/Allure reports and failure screenshots
+reports/*
+!reports/.gitkeep
+allure-results/
+allure-report/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+# Linter and type-checker caches
+.ruff_cache/
+.mypy_cache/
+# Browser driver logs
+*.log
+geckodriver.log
+chromedriver.log
+
+# --- Large dependency folders ---------------------------------------------------
+node_modules/
+
+# --- Editors and operating systems -----------------------------------------------
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

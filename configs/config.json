@@ -1,0 +1,6 @@
+{
+  "base_url": "https://qae-assignment-tau.vercel.app",
+  "ui_timeout_seconds": 10,
+  "api_timeout_seconds": 10,
+  "headless": true
+}
