@@ -6,6 +6,7 @@ from datetime import date
 from pathlib import Path
 
 import pytest
+import pytest_html
 from selenium.webdriver.remote.webdriver import WebDriver
 
 from pages.betting_page import BettingPage
@@ -82,10 +83,11 @@ def pytest_runtest_makereport(
     item: pytest.Item,
     call: pytest.CallInfo[None],
 ) -> Generator[None, pytest.TestReport, pytest.TestReport]:
-    """Save a browser screenshot into reports/ when a UI test fails.
+    """Save a browser screenshot when a UI test fails.
 
-    pytest-check's hook runs inside this wrapper, so soft-assertion failures are
-    already reflected in report.failed here.
+    The screenshot goes into reports/ as a PNG file and is also embedded in the
+    HTML report. pytest-check's hook runs inside this wrapper, so soft-assertion
+    failures are already reflected in report.failed here.
     """
     report = yield
     web_driver = item.funcargs.get("driver") if hasattr(item, "funcargs") else None
@@ -93,4 +95,14 @@ def pytest_runtest_makereport(
         REPORTS_DIR.mkdir(exist_ok=True)
         file_name = re.sub(r"[^\w.-]", "_", item.name)
         web_driver.save_screenshot(str(REPORTS_DIR / f"{file_name}.png"))
+        screenshot_extra = pytest_html.extras.png(
+            web_driver.get_screenshot_as_base64(),
+            name="Screenshot on failure",
+        )
+        # pytest-html reads the report's "extras" attribute when it renders.
+        # TestReport does not declare it, hence the narrow type ignore.
+        report.extras = [  # type: ignore[attr-defined]
+            *getattr(report, "extras", []),
+            screenshot_extra,
+        ]
     return report

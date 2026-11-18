@@ -111,8 +111,14 @@ Timeouts and the default base URL live in `configs/config.json`.
 
 ### Results
 
-- pytest prints a summary of every failed check in the terminal.
-- When a UI test fails, a browser screenshot is saved to `reports/`.
+- Every run writes an HTML report to `reports/report.html`. Open it in any
+  browser. It shows a pass/fail summary, the duration of each test, and the
+  failed checks with their messages (for example the related ISSUE id).
+- When a UI test fails, a browser screenshot is embedded in the report under
+  that test, and also saved as a PNG in `reports/`.
+- The report is a single self-contained file, so you can attach it to a
+  ticket or share it as is.
+- pytest also prints a summary of every failed check in the terminal.
 
 ## Project layout
 
@@ -122,7 +128,7 @@ data/         Test data, loaded into tests with @pytest.mark.parametrize
 pages/        Page objects (BasePage with shared waits, BettingPage)
 tests/        Test cases, one file per feature
 utils/        API client, driver factory, config and data loaders, models
-reports/      Failure screenshots (generated, not committed)
+reports/      HTML report and failure screenshots (generated, not committed)
 conftest.py   Shared fixtures and the failure screenshot hook
 .env.example  Template for your local .env (the real .env is git-ignored)
 .gitignore    Keeps secrets, virtual environments, caches and reports out of git

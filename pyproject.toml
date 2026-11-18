@@ -7,7 +7,7 @@ requires-python = ">=3.12"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-addopts = "-ra"
+addopts = "-ra --html=reports/report.html --self-contained-html"
 
 [tool.ruff]
 line-length = 88
@@ -21,3 +21,8 @@ python_version = "3.12"
 check_untyped_defs = true
 warn_unused_ignores = true
 exclude = ["^\\.venv/"]
+
+[[tool.mypy.overrides]]
+# pytest-html ships no type hints.
+module = ["pytest_html", "pytest_html.*"]
+ignore_missing_imports = true
