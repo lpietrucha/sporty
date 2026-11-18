@@ -20,9 +20,11 @@ def test_single_bet_placement_shows_receipt_and_deducts_stake(
     betting_page: BettingPage,
     api_client: ApiClient,
     upcoming_match: Match,
-    initial_balance: float,
     bet_case: dict[str, str],
 ) -> None:
+    # The betting_page fixture has already reset the balance before opening
+    # the page, so this is the persisted starting balance.
+    initial_balance = api_client.get_balance()
     selection = Selection(bet_case["selection"])
     stake = float(bet_case["stake"])
     expected_odds = upcoming_match.odds[selection]

@@ -1,7 +1,7 @@
 """Global fixtures: settings, API client, test state, browser lifecycle."""
 
 import re
-from collections.abc import Iterator
+from collections.abc import Generator, Iterator
 from datetime import date
 from pathlib import Path
 
@@ -24,13 +24,12 @@ def settings() -> Settings:
 
 @pytest.fixture(scope="session")
 def api_client(settings: Settings) -> Iterator[ApiClient]:
-    client = ApiClient(
+    with ApiClient(
         settings.base_url,
         settings.user_id,
         settings.api_timeout_seconds,
-    )
-    yield client
-    client.close()
+    ) as client:
+        yield client
 
 
 @pytest.fixture
@@ -62,9 +61,9 @@ def upcoming_match(api_client: ApiClient) -> Match:
 
 @pytest.fixture
 def driver(settings: Settings) -> Iterator[WebDriver]:
-    web_driver = create_chrome_driver(settings.is_headless)
-    yield web_driver
-    web_driver.quit()
+    # WebDriver's context manager calls quit() on exit, even if the test fails.
+    with create_chrome_driver(settings.is_headless) as web_driver:
+        yield web_driver
 
 
 @pytest.fixture
@@ -82,7 +81,7 @@ def betting_page(
 def pytest_runtest_makereport(
     item: pytest.Item,
     call: pytest.CallInfo[None],
-) -> Iterator[None]:
+) -> Generator[None, pytest.TestReport, pytest.TestReport]:
     """Save a browser screenshot into reports/ when a UI test fails.
 
     pytest-check's hook runs inside this wrapper, so soft-assertion failures are

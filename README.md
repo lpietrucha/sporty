@@ -43,7 +43,8 @@ All commands run from the project root (the folder with this README).
 
    On Windows, activate with `.venv\Scripts\activate` instead.
 
-2. Install the pinned dependencies.
+2. Install the pinned dependencies. If you will also change code, install
+   `requirements-dev.txt` instead, which adds the linters.
 
    ```bash
    pip install -r requirements.txt
@@ -155,8 +156,28 @@ conftest.py   Shared fixtures and the failure screenshot hook
 - **Naming.** Test files are `test_<feature>.py`, test functions are
   `test_<scenario>_<expected_outcome>`, and page files are `<name>_page.py` with
   a matching `PascalCase` class.
-- **Style.** Follow `python-coding-rules.md`. Ruff settings are in
-  `pyproject.toml`.
+- **Style.** Follow `python-coding-rules.md`. Ruff and mypy settings are in
+  `pyproject.toml`. Run the linters before you push (see below).
+
+### Linting and type checks
+
+Install the development tools once (they include the test dependencies):
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+Then run both checks from the project root. Both must pass before you push:
+
+```bash
+ruff check .
+```
+
+```bash
+mypy .
+```
+
+`ruff check --fix .` fixes import order and other auto-fixable issues.
 
 ### Adding a test case
 

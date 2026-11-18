@@ -2,7 +2,9 @@
 
 from dataclasses import dataclass
 from urllib.parse import urlencode
+
 from selenium.webdriver.common.by import By
+
 from pages.base_page import BasePage, Locator
 from utils.models import Selection, parse_amount
 
